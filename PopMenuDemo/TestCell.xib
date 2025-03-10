@@ -26,16 +26,24 @@
                         <state key="normal" title="Button"/>
                         <buttonConfiguration key="configuration" style="plain" title="right"/>
                     </button>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="C8L-kj-mUP">
+                        <rect key="frame" x="110.66666666666669" y="4.6666666666666679" width="99" height="35"/>
+                        <state key="normal" title="Button"/>
+                        <buttonConfiguration key="configuration" style="plain" title="centerBtn"/>
+                    </button>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="C8L-kj-mUP" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="0ID-eu-Xhc"/>
                     <constraint firstItem="1EB-TU-KxR" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="B2X-XQ-OGS"/>
                     <constraint firstItem="E6L-Vr-JIy" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="Bwt-MS-XMJ"/>
                     <constraint firstItem="E6L-Vr-JIy" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="dwA-83-pLg"/>
                     <constraint firstAttribute="trailing" secondItem="1EB-TU-KxR" secondAttribute="trailing" constant="10" id="lEG-Qi-QYg"/>
+                    <constraint firstItem="C8L-kj-mUP" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="vnb-rR-RUs"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
+                <outlet property="centerBtn" destination="C8L-kj-mUP" id="rCE-oa-6pc"/>
                 <outlet property="leftBtn" destination="E6L-Vr-JIy" id="mP0-HH-E3a"/>
                 <outlet property="rightBtn" destination="1EB-TU-KxR" id="Prr-JE-94e"/>
             </connections>

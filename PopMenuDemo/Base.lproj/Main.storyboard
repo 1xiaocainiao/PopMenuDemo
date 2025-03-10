@@ -16,38 +16,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="shc-nD-bmf">
-                                <rect key="frame" x="159" y="408.66666666666669" width="75" height="35"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Button"/>
-                                <connections>
-                                    <action selector="center:" destination="BYZ-38-t0r" eventType="touchUpInside" id="GWk-vf-ktg"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zw2-Fc-Kxu">
-                                <rect key="frame" x="284" y="783" width="75" height="35"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Button"/>
-                                <connections>
-                                    <action selector="bottomRight:" destination="BYZ-38-t0r" eventType="touchUpInside" id="CH2-pN-PZ4"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b7R-eE-nyw">
-                                <rect key="frame" x="32" y="783" width="75" height="35"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Button"/>
-                                <connections>
-                                    <action selector="bottomLeft:" destination="BYZ-38-t0r" eventType="touchUpInside" id="wJ5-7F-nOH"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sPU-9b-7rT">
-                                <rect key="frame" x="284" y="59" width="75" height="35"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Button"/>
-                                <connections>
-                                    <action selector="topRight:" destination="BYZ-38-t0r" eventType="touchUpInside" id="MCH-3e-yAc"/>
-                                </connections>
-                            </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="5PB-wC-A7O">
                                 <rect key="frame" x="0.0" y="59" width="393" height="793"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -57,16 +25,8 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="5PB-wC-A7O" secondAttribute="bottom" id="2xy-PS-r82"/>
-                            <constraint firstItem="shc-nD-bmf" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="AqG-lV-AY5"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="sPU-9b-7rT" secondAttribute="trailing" constant="34" id="JDI-Ds-ubd"/>
-                            <constraint firstItem="zw2-Fc-Kxu" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="JYh-TO-qZi"/>
                             <constraint firstItem="5PB-wC-A7O" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="Kmr-d6-4EX"/>
-                            <constraint firstItem="shc-nD-bmf" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="M7Q-YT-iaD"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="zw2-Fc-Kxu" secondAttribute="trailing" constant="34" id="RHp-7j-YXS"/>
                             <constraint firstItem="5PB-wC-A7O" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="Zsc-hx-sCV"/>
-                            <constraint firstItem="sPU-9b-7rT" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="maS-85-lbA"/>
-                            <constraint firstItem="b7R-eE-nyw" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="32" id="nSo-hJ-8jO"/>
-                            <constraint firstItem="b7R-eE-nyw" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="v9C-rY-TNI"/>
                             <constraint firstItem="5PB-wC-A7O" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="xUG-PL-Ocd"/>
                         </constraints>
                     </view>

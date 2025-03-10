@@ -22,20 +22,6 @@ class ViewController: UIViewController {
         listView.register(UINib(nibName: cellIdentifier, bundle: nil), forCellReuseIdentifier: cellIdentifier)
         // Do any additional setup after loading the view.
     }
-
-    @IBAction func topRight(_ sender: UIButton) {
-        showPopMenu(sender)
-    }
-    
-    @IBAction func center(_ sender: UIButton) {
-        showPopMenu(sender)
-    }
-    @IBAction func bottomRight(_ sender: UIButton) {
-        showPopMenu(sender)
-    }
-    @IBAction func bottomLeft(_ sender: UIButton) {
-        showPopMenu(sender)
-    }
     
     func showPopMenu(_ sourceView: UIButton) {
         let controller = PopMenuViewController(sourceView: sourceView, actions: [
@@ -78,6 +64,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         let cell: TestCell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! TestCell
         cell.leftBtn.addTarget(self, action: #selector(cellLeftTouched(_:)), for: .touchUpInside)
         cell.rightBtn.addTarget(self, action: #selector(cellRightTouched(_:)), for: .touchUpInside)
+        cell.centerBtn.addTarget(self, action: #selector(cellCenterTouched(_:)), for: .touchUpInside)
         return cell
     }
     
@@ -90,6 +77,10 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     @objc func cellRightTouched(_ sender: UIButton) {
+        showPopMenu(sender)
+    }
+    
+    @objc func cellCenterTouched(_ sender: UIButton) {
         showPopMenu(sender)
     }
 }

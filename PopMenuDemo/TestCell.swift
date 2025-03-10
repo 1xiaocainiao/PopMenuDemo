@@ -9,6 +9,7 @@ import UIKit
 
 class TestCell: UITableViewCell {
 
+    @IBOutlet weak var centerBtn: UIButton!
     @IBOutlet weak var leftBtn: UIButton!
     @IBOutlet weak var rightBtn: UIButton!
     override func awakeFromNib() {

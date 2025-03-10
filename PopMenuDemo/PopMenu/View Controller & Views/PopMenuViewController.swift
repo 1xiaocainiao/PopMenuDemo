@@ -354,30 +354,34 @@ extension PopMenuViewController {
         let minContentPos: CGFloat = UIScreen.main.bounds.size.width * 0.05
         let maxContentPos: CGFloat = UIScreen.main.bounds.size.width * 0.95
         
-        // 计算基础X坐标（原逻辑）
+        // 计算基础X坐标（保持原逻辑）
         let offsetX = (size.width - sourceFrame.size.width) / 2
         var desiredOriginX = sourceFrame.origin.x - offsetX
         desiredOriginX = max(min(desiredOriginX, maxContentPos - size.width), minContentPos)
         
-        // 计算Y坐标：优先显示在sourceView下方，若空间不足则显示在上方
-        let sourceBottomY = sourceFrame.origin.y + sourceFrame.size.height
-        let screenHeight = UIScreen.main.bounds.height
-        let spaceBelow = screenHeight - sourceBottomY
-        let spaceAbove = sourceFrame.origin.y
+        // 获取当前窗口的安全区域
+        guard let window = view.window ?? UIApplication.shared.windows.first(where: { $0.isKeyWindow }) else {
+            return CGPoint(x: desiredOriginX, y: sourceFrame.origin.y)
+        }
+        let safeAreaTop = window.safeAreaInsets.top
+        let safeAreaBottom = window.safeAreaInsets.bottom
+        
+        // 计算可用空间（优先下方）
+        let spaceBelow = window.bounds.height - sourceFrame.maxY - safeAreaBottom // 下方可用空间（扣除底部安全区域）
+        let spaceAbove = sourceFrame.origin.y - safeAreaTop // 上方可用空间
         
         var desiredOriginY: CGFloat
         
         if spaceBelow >= size.height || spaceBelow > spaceAbove {
-            // 下方有足够空间或下方空间大于上方，优先显示在下方
-            desiredOriginY = sourceBottomY
+            // 优先显示在下方：菜单顶部对齐sourceView底部
+            desiredOriginY = sourceFrame.maxY
         } else {
-            // 显示在上方
+            // 显示在上方：菜单底部对齐sourceView顶部
             desiredOriginY = sourceFrame.origin.y - size.height
         }
         
         var desiredOrigin = CGPoint(x: desiredOriginX, y: desiredOriginY)
         
-        translateOverflowX(desiredOrigin: &desiredOrigin, contentSize: size)
         // 处理Y轴溢出
         translateOverflowY(desiredOrigin: &desiredOrigin, contentSize: size)
         
@@ -411,19 +415,25 @@ extension PopMenuViewController {
     ///   - desiredOrigin: The desired origin point
     ///   - contentSize: Content size
     fileprivate func translateOverflowY(desiredOrigin: inout CGPoint, contentSize: CGSize) {
-        let edgePadding: CGFloat
+        guard let window = view.window ?? UIApplication.shared.windows.first(where: { $0.isKeyWindow }) else { return }
         
-        if #available(iOS 11.0, *) {
-            edgePadding = UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 8
-        } else {
-            edgePadding = 8
-        }
+        let safeAreaTop = window.safeAreaInsets.top
+        let safeAreaBottom = window.safeAreaInsets.bottom
         
-        let minY: CGFloat = edgePadding
-        let maxY: CGFloat = UIScreen.main.bounds.height - contentSize.height - edgePadding
+        // 允许的最小Y和最大Y（强制在安全区域内）
+        let minY: CGFloat = safeAreaTop
+        let maxY: CGFloat = window.bounds.height - contentSize.height - safeAreaBottom
         
-        // 确保Y坐标在[minY, maxY]范围内
+        // 强制Y坐标不超出安全区域
         desiredOrigin.y = max(min(desiredOrigin.y, maxY), minY)
+        
+        // 特殊处理：如果强制调整后遮挡sourceView，则反向显示
+        let sourceFrame = absoluteSourceFrame ?? .zero
+        if desiredOrigin.y + contentSize.height > sourceFrame.origin.y && desiredOrigin.y < sourceFrame.maxY {
+            // 如果菜单与sourceView重叠，切换方向
+            desiredOrigin.y = sourceFrame.origin.y - contentSize.height
+            desiredOrigin.y = max(desiredOrigin.y, safeAreaTop)
+        }
     }
     
     /// Determine the content width by the longest title possible.
@@ -680,26 +690,30 @@ extension PopMenuViewController: UIViewControllerTransitioningDelegate {
      var desiredOriginX = sourceFrame.origin.x - offsetX
      desiredOriginX = max(min(desiredOriginX, maxContentPos - size.width), minContentPos)
      
-     // 计算Y坐标：优先显示在sourceView上方，若空间不足则显示在下方
-     let sourceTopY = sourceFrame.origin.y
-     let screenHeight = UIScreen.main.bounds.height
-     
-     // 获取安全区域边距
-     let safeAreaTop: CGFloat = UIApplication.shared.keyWindow?.safeAreaInsets.top ?? 0
-     let safeAreaBottom: CGFloat = UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0
+     // 获取当前窗口的安全区域
+     guard let window = view.window ?? UIApplication.shared.windows.first(where: { $0.isKeyWindow }) else {
+         return CGPoint(x: desiredOriginX, y: sourceFrame.origin.y)
+     }
+     let safeAreaTop = window.safeAreaInsets.top
+     let safeAreaBottom = window.safeAreaInsets.bottom
      
      // 计算可用空间（考虑安全区域）
-     let spaceAbove = sourceTopY - safeAreaTop  // 上方可用空间
-     let spaceBelow = screenHeight - sourceFrame.maxY - safeAreaBottom // 下方可用空间
+     let spaceAbove = sourceFrame.origin.y - safeAreaTop  // 上方可用空间
+     let spaceBelow = (window.bounds.height - sourceFrame.maxY) - safeAreaBottom // 下方可用空间
      
      var desiredOriginY: CGFloat
      
      if spaceAbove >= size.height || spaceAbove > spaceBelow {
          // 优先显示在上方：菜单底部对齐sourceView顶部
-         desiredOriginY = sourceTopY - size.height
+         desiredOriginY = sourceFrame.origin.y - size.height
+         // 确保不超过安全区域顶部
+         desiredOriginY = max(desiredOriginY, safeAreaTop)
      } else {
          // 显示在下方：菜单顶部对齐sourceView底部
          desiredOriginY = sourceFrame.maxY
+         // 确保不超过安全区域底部
+         let maxY = window.bounds.height - size.height - safeAreaBottom
+         desiredOriginY = min(desiredOriginY, maxY)
      }
      
      var desiredOrigin = CGPoint(x: desiredOriginX, y: desiredOriginY)
@@ -709,14 +723,16 @@ extension PopMenuViewController: UIViewControllerTransitioningDelegate {
      
      return desiredOrigin
  }
+
  fileprivate func translateOverflowY(desiredOrigin: inout CGPoint, contentSize: CGSize) {
-     // 获取安全区域边距
-     let safeAreaTop: CGFloat = UIApplication.shared.keyWindow?.safeAreaInsets.top ?? 0
-     let safeAreaBottom: CGFloat = UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0
+     guard let window = view.window ?? UIApplication.shared.windows.first(where: { $0.isKeyWindow }) else { return }
+     
+     let safeAreaTop = window.safeAreaInsets.top
+     let safeAreaBottom = window.safeAreaInsets.bottom
      
      // 计算允许的最小Y和最大Y（考虑安全区域）
      let minY: CGFloat = safeAreaTop
-     let maxY: CGFloat = UIScreen.main.bounds.height - contentSize.height - safeAreaBottom
+     let maxY: CGFloat = window.bounds.height - contentSize.height - safeAreaBottom
      
      // 强制Y坐标在安全区域内
      desiredOrigin.y = max(min(desiredOrigin.y, maxY), minY)
