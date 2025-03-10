@@ -9,8 +9,17 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    @IBOutlet weak var listView: UITableView!
+    
+    let cellIdentifier: String = String(describing: TestCell.self)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        listView.delegate = self
+        listView.dataSource = self
+        
+        listView.register(UINib(nibName: cellIdentifier, bundle: nil), forCellReuseIdentifier: cellIdentifier)
         // Do any additional setup after loading the view.
     }
 
@@ -51,3 +60,36 @@ class ViewController: UIViewController {
     }
 }
 
+// MARK: -  UITableViewDelegate, UITableViewDataSource
+extension ViewController: UITableViewDelegate, UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 20
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 50
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell: TestCell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! TestCell
+        cell.leftBtn.addTarget(self, action: #selector(cellLeftTouched(_:)), for: .touchUpInside)
+        cell.rightBtn.addTarget(self, action: #selector(cellRightTouched(_:)), for: .touchUpInside)
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    @objc func cellLeftTouched(_ sender: UIButton) {
+        showPopMenu(sender)
+    }
+    
+    @objc func cellRightTouched(_ sender: UIButton) {
+        showPopMenu(sender)
+    }
+}
