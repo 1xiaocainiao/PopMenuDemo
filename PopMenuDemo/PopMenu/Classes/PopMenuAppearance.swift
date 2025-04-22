@@ -50,7 +50,8 @@ final public class PopMenuAppearance: NSObject {
     
     /// The presentation style
     public var popMenuPresentationStyle: PopMenuPresentationStyle = .cover()
-
+    
+    public var popMenuContentPosition: PopMenuContentPosition = .bottom
 }
 
 /// Background styles for PopMenu.
@@ -198,4 +199,9 @@ public enum PopMenuDirection {
     case right
     case bottom
     case none
+}
+
+public enum PopMenuContentPosition {
+    case top
+    case bottom
 }

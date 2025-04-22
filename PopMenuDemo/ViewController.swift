@@ -33,6 +33,7 @@ class ViewController: UIViewController {
         // Customize appearance
         controller.appearance.popMenuFont = UIFont(name: "AvenirNext-DemiBold", size: 16)!
         controller.appearance.popMenuBackgroundStyle = .none()
+        controller.appearance.popMenuContentPosition = .top
         // Configure options
         controller.shouldDismissOnSelection = false
 //        controller.delegate = self
